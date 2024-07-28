@@ -1,5 +1,5 @@
 import React from "react";
-import ProductList from "../components/prodoct-list";
+import ProductList from "../components/product-list";
 import { Box } from "@mui/material";
 import { styled } from "@mui/system";
 
