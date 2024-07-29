@@ -2,8 +2,11 @@ import React, { ReactNode, useEffect, useState } from "react";
 import { styled } from "@mui/material";
 import Navbar from "../components/navbar";
 import Sidebar from "../components/sidebar";
-import { Category } from "../types/types";
-import { fetchProductData } from "../utils/api";
+// import { Category } from "../types/types";
+import { useAppDispatch, useAppSelector } from "../hooks";
+import { fetchCategories } from "../slices/categoriesSlice";
+
+// import { fetchProductData } from "../utils/api";
 import Footer from "../components/footer";
 
 const SIDE_NAV_WIDTH = 280;
@@ -36,10 +39,13 @@ interface DashboardLayoutProps {
 export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
 	children,
 }) => {
-	const [categories, setCategories] = useState<Category[]>([]);
-	const [isLoading, setIsLoading] = useState(false);
-	const [error, setError] = useState<string | null>(null);
+	const dispatch = useAppDispatch();
+	const { categories, isLoading, error } = useAppSelector((state) => state.categories);
 	const [searchTerm, setSearchTerm] = useState("");
+	// const [categories, setCategories] = useState<Category[]>([]);
+	// const [isLoading, setIsLoading] = useState(false);
+	// const [error, setError] = useState<string | null>(null);
+	// const [searchTerm, setSearchTerm] = useState("");
 
 	const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setSearchTerm(event.target.value);
@@ -50,31 +56,36 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
 	// 	setSidebarOpen(!sidebarOpen);
 	// };
 
-	const isError = (error: unknown): error is Error => {
-		return error instanceof Error;
-	};
+	// const isError = (error: unknown): error is Error => {
+	// 	return error instanceof Error;
+	// };
 
 	useEffect(() => {
-		const fetchData = async () => {
-			setIsLoading(true);
-			setError(null);
+		dispatch(fetchCategories());
+	}, [dispatch])
+		
 
-			try {
-				const fetchedCategories = await fetchProductData();
-				setCategories(fetchedCategories);
-			} catch (error) {
-				if (isError(error)) {
-					setError(error.message);
-				} else {
-					setError("An unknown error occurred");
-				}
-			} finally {
-				setIsLoading(false);
-			}
-		};
+	// useEffect(() => {
+	// 	const fetchData = async () => {
+	// 		setIsLoading(true);
+	// 		setError(null);
 
-		fetchData();
-	}, []);
+	// 		try {
+	// 			const fetchedCategories = await fetchProductData();
+	// 			setCategories(fetchedCategories);
+	// 		} catch (error) {
+	// 			if (isError(error)) {
+	// 				setError(error.message);
+	// 			} else {
+	// 				setError("An unknown error occurred");
+	// 			}
+	// 		} finally {
+	// 			setIsLoading(false);
+	// 		}
+	// 	};
+
+	// 	fetchData();
+	// }, []);
 
 	return (
 		<React.Fragment>
