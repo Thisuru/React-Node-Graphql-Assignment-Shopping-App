@@ -1,5 +1,5 @@
 // src/components/product-list.tsx
-import React, { useState } from "react";
+import React from "react";
 import { useAppSelector } from "../hooks";
 import ArticleCard from "./article-card";
 import { Box, Divider, Typography } from "@mui/material";
@@ -21,18 +21,13 @@ const StyledDivider = styled(Divider)({
 const StyledGrid = styled(Grid)();
 
 const ProductList: React.FC = () => {
-  const { categories, isLoading, error } = useAppSelector((state) => state.categories);
-  const [searchTerm, setSearchTerm] = useState("");
+  const { categories, isLoading, error, searchTerm } = useAppSelector((state) => state.categories);
 
   const filteredArticles = categories.flatMap((category) =>
     category.articles.filter((article) =>
       article.name.toLowerCase().includes(searchTerm.toLowerCase())
     )
   );
-
-  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(event.target.value);
-  };
 
   const totalArticles = categories.flatMap((category) => category.articles).length;
 

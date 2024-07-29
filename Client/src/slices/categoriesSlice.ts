@@ -7,12 +7,15 @@ interface CategoriesState {
   categories: Category[];
   isLoading: boolean;
   error: string | null;
+  searchTerm: string;
+
 }
 
 const initialState: CategoriesState = {
   categories: [],
   isLoading: false,
   error: null,
+  searchTerm: "",
 };
 
 export const fetchCategories = createAsyncThunk("categories/fetchCategories", async () => {
@@ -23,7 +26,11 @@ export const fetchCategories = createAsyncThunk("categories/fetchCategories", as
 const categoriesSlice = createSlice({
   name: "categories",
   initialState,
-  reducers: {},
+  reducers: {
+    setSearchTerm(state, action: PayloadAction<string>) {
+      state.searchTerm = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchCategories.pending, (state) => {
@@ -41,4 +48,5 @@ const categoriesSlice = createSlice({
   },
 });
 
+export const { setSearchTerm } = categoriesSlice.actions;
 export default categoriesSlice.reducer;
