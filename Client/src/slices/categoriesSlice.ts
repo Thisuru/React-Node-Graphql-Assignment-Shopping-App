@@ -3,12 +3,11 @@ import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { Category } from "../types/types";
 import { fetchProductData } from "../utils/api";
 
-interface CategoriesState {
+export interface CategoriesState {
   categories: Category[];
   isLoading: boolean;
   error: string | null;
   searchTerm: string;
-
 }
 
 const initialState: CategoriesState = {
